@@ -1086,6 +1086,51 @@
                 "mvnw",
                 "IDEBundledMaven"
             ]
+        },
+        {
+            "name": "codeTransformVersions",
+            "type": "string",
+           "description": "Metadata on build tool and language versions."
+       },
+       {
+            "name": "codeTransformCompletedStages",
+            "type": "string",
+            "description": "Track completed stages in the transformation"
+       },
+       {
+           "name": "codeTransformIsResumed",
+           "type": "boolean",
+           "description": "If job was resumed from previous session"
+       },
+       {
+           "name": "codeTransformConfigurationFileSelectedChanged",
+          "type": "boolean",
+           "description": "users select a new configuration/module file from the dropdown."
+       },
+       {
+           "name": "codeTransformDependenciesCopied",
+           "type": "boolean",
+           "description": "If dependencies are copied into upload artifact."
+       },
+       {
+           "name": "codeTransformUploadByteSize",
+           "type": "int",
+           "description": "An integer representing the byte size of the upload"
+       },
+       {
+           "name": "codeTransformUploadDuration",
+           "type": "int",
+           "description": "The duration of the upload in milliseconds"
+       },
+       {
+            "name": "codeTransformDownloadByteSize",
+            "type": "int",
+            "description": "An integer representing the byte size of the download"
+        },
+        {
+            "name": "codeTransformDownloadDuration",
+            "type": "int",
+            "description": "The duration of the download in milliseconds"
         }
     ],
     "metrics": [
@@ -3909,6 +3954,180 @@
                 },
                 {
                     "type": "reason",
+                    "required": false
+                }
+            ]
+        },
+        {
+            "name": "codeTransform_transform",
+            "description": "User initiates code transform.",
+            "metadata" : [
+                /** Overall **/
+                {
+                    "type": "codeTransformSessionId",
+                    "required": true
+                },
+                {
+                    "type": "duration",  // total latency
+                    "required": true
+                },
+                {
+                    "type": "result",  // Toolkit: "Succeeded", "Failed", "Cancelled"
+                    "required": true
+                },
+                {
+                    "type": "reason",
+                    "required": false
+                },
+                {
+                    "type": "codeTranformIsResumed",  // new
+                    "required": true
+                },
+                {
+                    "type": "codeTransformCompletedStages", // new
+                    "required": true
+                }
+                {
+                    "type": "codeTransformVersions" , // new
+                    "required": true
+                }
+                /** User Initiated **/
+                {
+                    "type": "codeTransformStartSrcComponents",
+                    "required": true
+                },
+                {
+                    "type": "codeTransformCancelSrcComponents",
+                    "required": false
+                },
+                /** Project Pre-validation **/
+                {
+                    "type": "codeTransformPreValidationError",
+                    "required": false
+                },
+                / ** Project Submission **/
+                {
+                    "type": "codeTransformConfigurationFileSelectedChanged", // new
+                    "required": true
+                }
+                {
+                    "type": "codeTransformJavaSourceVersionsAllowed",
+                    "required": false
+                },
+                {
+                    "type": "codeTransformJavaTargetVersionsAllowed",
+                    "required": false
+                },
+                / ** Job Starts -> Finishes **/
+                {
+                    "type": "codeTransformJobId",
+                    "required": false
+                },
+                // notes: ideally maven only copy 1p, and if it fails, the job fails.
+                // so failures reason will be captured in the overall "reason" field.
+                {
+                    "type": "codeTransformMavenBuildCommand",
+                    "required": false
+                },
+                {
+                    "type": "codeTransformDependenciesCopied",  // new
+                    "required": false
+                },
+                {
+                    "type": "codeTransformUploadByteSize", // new
+                    "required": false
+                },
+                {
+                    "type": "codeTransformUploadDuration", // new
+                    "required": false
+                },
+                {
+                    "type": "codeTransformRuntimeError",
+                    "required": false
+                },
+                {
+                    "type": "codeTransformStatus",  // job status
+                    "required: true
+                },
+            ]
+        },
+        {
+            "name": "codeTransform_viewResult",
+            "description": "User clicks to view diff results.",
+            "metadata": [
+                {
+                    "type": "codeTransformVCSViewerSrcComponents",
+                    "required": true
+                },
+                {
+                    "type": "codeTransformSessionId",
+                    "required": true
+                },
+                {
+                    "type": "codeTransformJobId",
+                    "required": true
+                },
+                {
+                    "type": "codeTransformStatus",  // job status
+                    "required: true
+                },
+                {
+                    "type": "codeTransformDownloadByteSize",  // new
+                    "required": false
+                },
+                {
+                    "type": "codeTransformDownloadDuration",  // new
+                    "required": false
+                },
+                {
+                    "type": "duration",  // time it takes to download result and render diff
+                    "required": true
+                },
+                {
+                    "type": "result", // Toolkit: "Succeeded", "Failed", "Cancelled"
+                    "required": true
+                },
+                {
+                    "type": "reason"  // "accepted", "rejected", "viewed"
+                    "required": false
+                }
+            ]
+        },
+        {
+            "name": "codeTransform_logApiCall",
+            "passive": true,
+            "description": "log client side API invocations.",
+            "metadata": [
+                {
+                    "type": "codeTransformApiNames",
+                    "required": true
+                },
+                {
+                    "type": "codeTransformSessionId",
+                    "required": true
+                },
+                {
+                    "type": "codeTransformJobId",
+                    "required": false
+                },
+                {
+                    "type": "duration",
+                    "required": true
+                },
+                {
+                    "type": "result",  // Toolkit: "Succeeded", "Failed", "Cancelled"
+                    "required": false
+                },
+                {
+                    "type": "reason",  // error type
+                    "required": false
+                },
+                {
+                    "type": "requestId",
+                    "required": false
+                },
+                {
+                    "type": "codeTransformApiErrorMessage",  // optional, is "reason" enough?
                     "required": false
                 }
             ]
