@@ -1444,6 +1444,11 @@
             ]
         },
         {
+            "name": "codeTransformMetadata",
+            "type": "string",
+            "description": "A general field for logging metadata associated to Amazon Q transform metrics."
+        },
+        {
             "name": "xrayEnabled",
             "type": "boolean",
             "description": "Whether or not AWS X-Ray is enabled"
@@ -3141,6 +3146,10 @@
             "passive": true,
             "description": "Transform initiates project validation before user interaction and we want to gather project details then.",
             "metadata": [
+                {
+                    "type": "codeTransformMetadata",
+                    "required": false
+                },
                 {
                     "type": "codeTransformLocalJavaVersion",
                     "required": false
